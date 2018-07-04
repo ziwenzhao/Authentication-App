@@ -1,0 +1,77 @@
+page-auth {
+	$placeholder-color: #dad8d8ea;
+	// background-image display on device issues https://github.com/ionic-team/ionic/issues/8438
+    .background {
+        background-image: url('../assets/imgs/bg-1-1.png');
+		background-size: 120%
+    }
+
+	.scroll-content {
+		text-align: center;
+	}
+
+	ion-card.card {
+		box-shadow: none;
+		background: rgba($color: rgb(161, 161, 161), $alpha: 0.15);
+		border-radius: 10px;
+		margin-top: 20vh;
+	}
+
+	ion-card-header {
+		font-size: 6vw!important;
+		margin-bottom: 2vh;
+	}
+
+	p,ion-card-header.card-header {
+		color: #fff!important;
+	}
+
+	.list > .item-block:first-child {
+		border: medium none;
+	}
+
+	.item {
+		margin-bottom: 10px;
+		background: rgba(201, 200, 200, 0.5);
+		border: medium none;
+
+		.text-input {
+			color: #fff;
+		}
+
+		input::-moz-placeholder  {
+			color: $placeholder-color!important;
+		}
+
+		input:-moz-placeholder {
+			color: $placeholder-color!important;
+		}
+
+		*::-webkit-input-placeholder  {
+			color: $placeholder-color!important;
+		}
+
+		*:-ms-input-placeholder  {
+			color: $placeholder-color!important;
+		}
+
+		*:-moz-placeholder  {
+			color: $placeholder-color!important;
+		}
+	}
+
+	.icon {
+		padding-right: 10px;
+	}
+
+	.bottom {
+		position: absolute;
+        bottom: 5vh;
+        width: 100%;
+        font-size: 4.5vw
+    }
+    
+    .bottom span {
+        color: color($colors, primary, base);
+    }
+}

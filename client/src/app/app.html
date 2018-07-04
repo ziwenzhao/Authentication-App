@@ -1,0 +1,20 @@
+<ion-menu [content]="content">
+  <ion-content class="menu-body">
+    <ion-list no-lines>
+      <ion-item *ngFor="let p of pages" menuClose (click)="onOpenPage(p)">
+        <ion-icon [name]="p.icon" item-start></ion-icon>
+        {{p.title}}
+        <ion-icon name="arrow-forward" item-end></ion-icon>
+      </ion-item>
+    </ion-list>
+    <div class="menu-bottom">
+      <ion-item menuClose (click)="onLogOut()">
+        <ion-icon name="log-out" item-start></ion-icon>
+        Log Out
+        <ion-icon name="arrow-forward" item-end></ion-icon>
+      </ion-item>
+    </div>
+  </ion-content>
+</ion-menu>
+
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

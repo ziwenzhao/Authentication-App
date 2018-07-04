@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{recipe.title}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only clear (click)="onToggleFav()">
+        <ion-icon [name]="isFav ? 'ios-heart' : 'ios-heart-outline'"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <img [src]="recipe.imgUrl" [alt]="recipe.title">
+  <h2>{{recipe.title}}</h2>
+  <p>{{recipe.description}}</p>
+</ion-content>

@@ -1,0 +1,33 @@
+<ion-content class="background">
+  <ion-card>
+    <ion-card-header>
+      {{mode === 'signin' ? NAME_CONSTANTS.AUTH.SIGN_IN_ACCOUNT : NAME_CONSTANTS.AUTH.CREATE_ACCOUNT}}
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <ion-list>
+          <ion-item>
+            <ion-input type="text" placeholder="Email" formControlName="email"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+          </ion-item>
+          <button type="submit" ion-button block outline color="light">
+            {{mode === 'signin' ? NAME_CONSTANTS.AUTH.SIGN_IN: NAME_CONSTANTS.AUTH.SIGN_UP}}
+          </button>
+        </ion-list>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="bottom">
+    <p *ngIf="mode === 'signin'">
+      {{NAME_CONSTANTS.AUTH.ACCOUNT_NOT_EXIST}}
+      <span (click)="onSwitch()">{{NAME_CONSTANTS.AUTH.SIGN_IN}}</span>
+    </p>
+    <p *ngIf="mode === 'signup'">
+      {{NAME_CONSTANTS.AUTH.ACCOUNT_EXIST}}
+      <span (click)="onSwitch()">{{NAME_CONSTANTS.AUTH.SIGN_UP}}</span>
+    </p>
+  </div>
+</ion-content>

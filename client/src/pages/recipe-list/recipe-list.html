@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{(mode === 'all' ? NAME_CONSTANTS.RECIPE.ALL_RECIPES: NAME_CONSTANTS.RECIPE.FAV_RECIPES )}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <p *ngIf="showFavEmpty" class="empty-recipe-message">
+    {{NAME_CONSTANTS.RECIPE.FAV_EMPTY_MESSAGE}}
+  </p>
+  <ion-list no-lines>
+    <ion-item *ngFor="let recipe of recipes" (click)="onRecipeDetails(recipe)">
+      <ion-thumbnail item-start>
+        <img [src]="recipe.imgUrl" [alt]="recipe.title">
+      </ion-thumbnail>
+      <h2>{{recipe.title}}</h2>
+      <p>{{recipe.description}}</p>
+    </ion-item>
+  </ion-list>
+</ion-content>
