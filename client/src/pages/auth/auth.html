@@ -23,11 +23,11 @@
   <div class="bottom">
     <p *ngIf="mode === 'signin'">
       {{NAME_CONSTANTS.AUTH.ACCOUNT_NOT_EXIST}}
-      <span (click)="onSwitch()">{{NAME_CONSTANTS.AUTH.SIGN_IN}}</span>
+      <span (click)="onSwitch()">{{NAME_CONSTANTS.AUTH.SIGN_UP}}</span>
     </p>
     <p *ngIf="mode === 'signup'">
       {{NAME_CONSTANTS.AUTH.ACCOUNT_EXIST}}
-      <span (click)="onSwitch()">{{NAME_CONSTANTS.AUTH.SIGN_UP}}</span>
+      <span (click)="onSwitch()">{{NAME_CONSTANTS.AUTH.SIGN_IN}}</span>
     </p>
   </div>
 </ion-content>

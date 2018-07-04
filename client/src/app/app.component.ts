@@ -33,7 +33,9 @@ export class MyApp {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT); // Lock the screen in portrait orientation.
+      if (!this.platform.is('core')) {
+        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT); // Lock the screen in portrait orientation.
+      }
     });
   }
 
