@@ -1,6 +1,7 @@
 const AUTH = {
     SIGN_IN: "Sign In",
     SIGN_UP: "Sign Up",
+    SIGN_OUT: "Sign Out",
     SIGN_IN_ACCOUNT: "Sign into your account",
     CREATE_ACCOUNT: "Create your account",
     SIGN_IN_LOADING: "Signing In",
@@ -9,7 +10,7 @@ const AUTH = {
     SIGN_UP_FAIL: "Sign Up Failed!",
     ACCOUNT_NOT_EXIST: "Don't have an account ?",
     ACCOUNT_EXIST: "Already have an account?"
-}
+};
 
 const RECIPE = {
     ALL_RECIPES: 'All Recipes',
@@ -22,16 +23,15 @@ const RECIPE = {
     CHECK_FAV_STATUS_FAIL: "Failed to check favorite status.",
     DELETE_FAV_FAIL: "Failed to cancel favor!",
     ADD_FAV_FAIL: "Failed to add favorite recipe!"
-
-}
+};
 
 const ERROR = {
     EMAIL: "The email is invalid.",
     PASSWORD: "The minimum length of password is 6.",
-}
+};
 
 const GENERAL = {
     OK: "OK"
-}
+};
 
 export { AUTH, RECIPE, ERROR, GENERAL }

@@ -1,3 +1,6 @@
+/**
+ * @description RecipeService provides all the functions in relation to recipes.
+ */
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
@@ -13,7 +16,7 @@ export class RecipeService {
     ) { }
 
     /**
-     * Get HttpHeaders 
+     * Get HttpHeaders.
      * @returns {HttpHeaders}
      */
     getHeaders(): HttpHeaders {
@@ -24,7 +27,7 @@ export class RecipeService {
     }
 
     /**
-     * Fetch all recipes
+     * Fetch all recipes.
      * @returns {Observable<Recipe[]>}
      */
     getAllRecipes(): Observable<Recipe[]> {

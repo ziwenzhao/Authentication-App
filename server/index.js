@@ -1,30 +1,30 @@
 /**
- * @description The main file of server. It defines all the REST APIs.
+ * @description The main file of the server. It defines all the REST APIs.
  */
 const express = require('express');
-const bodyParser = require('body-parser'); // Used to parse body from request
-const jwt = require('jsonwebtoken');  // Used to sign and verify token
+const bodyParser = require('body-parser'); // Used to parse body from request.
+const jwt = require('jsonwebtoken');  // Used to sign and verify token.
+const cors = require('cors');  // Used to solve the Cross-Origin Resource Sharing issues in the browser.
+const bcrypt = require('bcrypt');  // Used to hash password.
 const mongoose = require('./db/mongoose');
-const cors = require('cors');  // Used to solve the Cross-Origin Resource Sharing issues in the browser
-const bcrypt = require('bcrypt');  // Used to hash password
 const User = require('./models/user');
 const { Recipe, FavRecipe } = require('./models/recipe');
 const Image = require('./models/image');
-const { SECRET_KEY } = require('./config/auth');  // Used to sign token
+const { SECRET_KEY } = require('./config/auth');  // Used to sign token.
 const { EMAIL_REGEX } = require('./config/regex');
 const app = express();
-const port = process.env.PORT || 5000;  // Set listening port accoring to environment
+const port = process.env.PORT || 5000;  // Set listening port accoring to environment.
 app.use(bodyParser.json());
 app.use(cors());
 
-
+// The API for signing up a user.
 app.post('/signup', verifyEmailAndPassword, (req, res) => {
     User.findOne({ email: req.body.email }, (err, user) => {
         if (err) {
             return res.status(400).send(err);
         }
         if (user) {
-            return res.status(409).send({ message: 'This email already exists!' })
+            return res.status(409).send({ message: 'This email already exists!' });
         }
         const newUser = new User({
             email: req.body.email,
@@ -34,7 +34,7 @@ app.post('/signup', verifyEmailAndPassword, (req, res) => {
             if (err) {
                 return res.status(400).send(err);
             }
-            const token = signToken(user.id)
+            const token = signToken(user.id);
             res.send({
                 id: user.id,
                 email: user.email,
@@ -44,13 +44,14 @@ app.post('/signup', verifyEmailAndPassword, (req, res) => {
     });
 })
 
+// The API for signing in a user.
 app.post('/signin', verifyEmailAndPassword, (req, res) => {
     User.findOne({ email: req.body.email }, async (err, user) => {
         if (err) {
             return res.status(400).send(err);
         }
         if (!user) {
-            return res.status(404).send({ message: 'This user does not exist!' })
+            return res.status(404).send({ message: 'This user does not exist!' });
         }
         const result = await bcrypt.compare(req.body.password, user.password).catch(e => console.log('compare error is ', e));
         if (!result) {
@@ -61,14 +62,16 @@ app.post('/signin', verifyEmailAndPassword, (req, res) => {
             id: user.id,
             email: user.email,
             token
-        })
+        });
     })
 })
 
+// The API for requesting a new token.
 app.get('/refresh-token', verifyToken, (req, res) => {
     res.send({ token: signToken(req.userId) });
 })
 
+// The API for fetching all recipes.
 app.get('/recipes', (req, res) => {
     Recipe.find((err, recipes) => {
         if (err) {
@@ -78,6 +81,7 @@ app.get('/recipes', (req, res) => {
     })
 })
 
+// The API for fetching all favorite recipes of a user.
 app.get('/favorite-recipes', verifyToken, (req, res) => {
     FavRecipe.findOne({ userId: req.userId }, (err, result) => {
         if (err) {
@@ -90,6 +94,7 @@ app.get('/favorite-recipes', verifyToken, (req, res) => {
     });
 })
 
+// The API for adding a recipe to a user's favorites.
 app.patch('/favorite-recipes/add/:id', verifyToken, verifyRecipeId, (req, res) => {
     FavRecipe.findOne({ userId: req.userId }, (err, result) => {
         if (err) {
@@ -104,7 +109,7 @@ app.patch('/favorite-recipes/add/:id', verifyToken, verifyRecipeId, (req, res) =
                 if (err) {
                     return status(400).send(err);
                 }
-                res.send({ message: 'Added a favorite recipe!' })
+                res.send({ message: 'Added a favorite recipe!' });
             });
         } else {
             if (result.favRecipes.find(recipe => recipe.id === req.recipe.id)) {
@@ -121,6 +126,7 @@ app.patch('/favorite-recipes/add/:id', verifyToken, verifyRecipeId, (req, res) =
     })
 })
 
+// The API for removing a recipe from a user's favorites.
 app.patch('/favorite-recipes/delete/:id', verifyToken, verifyRecipeId, (req, res) => {
     FavRecipe.findOne({ userId: req.userId }, (err, result) => {
         if (err) {
@@ -143,6 +149,7 @@ app.patch('/favorite-recipes/delete/:id', verifyToken, verifyRecipeId, (req, res
     })
 })
 
+// The API for fetching the buffer data of an image.
 app.get('/image/:id', (req, res) => {
     Image.findById(req.params.id, (err, image) => {
         if (err) {
@@ -169,10 +176,10 @@ function verifyEmailAndPassword(req, res, next) {
     }
     let error = {};
     if (!EMAIL_REGEX.test(req.body.email)) {
-        error.email = 'The form of email is incorrect!'
+        error.email = 'The form of email is incorrect!';
     }
     if (req.body.password.length < 6) {
-        error.password = 'The minimum length of password should be 6.'
+        error.password = 'The minimum length of password should be 6.';
     }
     if (Object.keys(error).length !== 0) {
         return res.status(422).send({ error });
@@ -182,7 +189,7 @@ function verifyEmailAndPassword(req, res, next) {
 
 /**
  * It checks the validation of recipe Id provided in the request path parameter.
- * If it finds the recipe corresponded to the Id, it will attach the recipe in reqeust.
+ * If it finds the recipe corresponded to the Id, it will attach the recipe in the request.
  * @param req 
  * @param res 
  * @param next 
@@ -204,7 +211,7 @@ function verifyRecipeId(req, res, next) {
 }
 
 /**
- * It signs a token with the given userId. The secret key is hidden in the heroku environment variables.
+ * It signs a token with the given userId and secret key. The secret key is hidden in the heroku environment variables.
  * @param userId 
  */
 function signToken(userId) {
@@ -217,7 +224,7 @@ function signToken(userId) {
 
 /**
  * It verifies the provided token in the header. 
- * If it decodes a existing user, it will attach the userId in the request
+ * If it finds an existing user corresponded to the token, it will attach the userId in the request.
  * @param req 
  * @param res 
  * @param next 
@@ -225,10 +232,10 @@ function signToken(userId) {
 function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization'];
     if (!bearerHeader) {
-        return res.status(401).send({ message: 'Authorization in header is missed!' })
+        return res.status(401).send({ message: 'Authorization in header is missed!' });
     }
     if (bearerHeader.split(' ')[0] !== 'bearer' || bearerHeader.split(' ').length !== 2) {
-        return res.status(401).send({ message: 'Token format in header is incorrect!' })
+        return res.status(401).send({ message: 'Token format in header is incorrect!' });
     }
     let payload = {};
     try {
@@ -252,7 +259,7 @@ function verifyToken(req, res, next) {
 }
 
 app.listen(port, () => {
-    console.log(`app listening on port ${port}`)
+    console.log(`app listening on port ${port}`);
 });
 
 module.exports = app;

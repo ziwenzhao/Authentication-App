@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { RecipeService } from '../../service/recipe.service';
 import { DataService } from '../../service/data.service';
@@ -13,16 +13,15 @@ import * as NAME_CONSTANTS from '../../config/name-constants';
   templateUrl: 'recipe-list.html'
 })
 export class RecipeListPage {
-  private mode: string;  // Mode of the list page, displaying either all recipes or favorite recipes
+  private mode: string;  // Mode of the list page, displaying either all recipes or favorite recipes.
   private recipes: Recipe[] = [];
-  private showFavEmpty = false;  // Toggle the display of empty favorites message
-  private loader: any;  //  Loading controller
+  private showFavEmpty = false;  // The flag of empty favorites message display.
+  private loader: any;  //  Loading controller.
   private NAME_CONSTANTS = NAME_CONSTANTS;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private recipeService: RecipeService,
     private dataService: DataService,
@@ -35,11 +34,14 @@ export class RecipeListPage {
     });
     this.loader.present();
     this.mode = this.navParams.get('mode');
+    // Fetch all recipes or favorite recipes.
     if (this.mode === 'all') {
       this.getRecipes(this.recipeService.getAllRecipes());
     } else {
       this.getRecipes(this.recipeService.getFavRecipes());
-      // Listen to the toggle favorite event
+      // Listen to the toggle favorite event.
+      // If a recipe is added to favorites, push it to the favorite list.
+      // If a recipe is removed from favorites, delete it from the favorite list.
       this.dataService.toggleFavSubject.subscribe(
         data => {
           if (data.value) {
@@ -55,12 +57,12 @@ export class RecipeListPage {
             }
           }
         }
-      )
+      );
     };
   }
 
   /**
-   * Handle the request of fetching all recipes or favorite recipes
+   * Handle the request of fetching all recipes or favorite recipes.
    * @param {Observable<Recipe[]>} request The request of fetching recipes
    * @returns {void}
    */
@@ -78,7 +80,7 @@ export class RecipeListPage {
   }
 
   /**
-   * Go to recipe details page with the given recipe
+   * Go to recipe details page with the given recipe.
    * @param {Recipe} recipe 
    * @returns {void}
    */
@@ -87,7 +89,7 @@ export class RecipeListPage {
   }
 
   /**
-   * Upate the display flag showFavEmpty of empty favorites message
+   * Upate the display flag showFavEmpty of empty favorites message.
    * @returns {void}
    */
   checkFavRecipesEmpty(): void {
@@ -97,5 +99,4 @@ export class RecipeListPage {
       this.showFavEmpty = false;
     }
   }
-
 }

@@ -1,8 +1,21 @@
 page-recipe-details {
     img {
-        width: 100%
+        width: 100%;
     }
+    
     ion-content {
         text-align: center;
+    }
+
+    p {
+        font-size: 3.4vw;
+    }
+
+    h2 {
+        font-size: 5.8vw;
+    }
+
+    div.toolbar-title {
+        font-size: 4vw;
     }
 }

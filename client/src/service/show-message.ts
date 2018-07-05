@@ -1,3 +1,6 @@
+/**
+ * @description MessageService provides all the functions of showing differnet types of messages.
+ */
 import { Injectable } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 import * as NAME_CONSTANTS from '../config/name-constants';
@@ -7,7 +10,7 @@ export class MessageService {
     constructor(private alertCtrl: AlertController) { }
 
     /**
-     * Show Alert with the given title and message
+     * Show Alert with the given title and message.
      * @param {string} title Alert Title
      * @param {string} [message] Alert Message
      * @returns {void}

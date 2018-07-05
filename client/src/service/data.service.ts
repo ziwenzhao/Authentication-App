@@ -1,3 +1,6 @@
+/**
+ * @description DataService provides all the Subjects which are used for the communication between pages and components.
+ */
 import { Subject } from 'rxjs';
 import { Recipe } from '../models/recipe.model';
 

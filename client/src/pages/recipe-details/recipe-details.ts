@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { NavParams, LoadingController } from 'ionic-angular';
 import { RecipeService } from '../../service/recipe.service';
 import { DataService } from '../../service/data.service';
 import { MessageService } from '../../service/show-message';
@@ -12,12 +12,11 @@ import * as NAME_CONSTANTS from '../../config/name-constants';
 })
 export class RecipeDetailsPage {
   private recipe: Recipe;
-  private isFav = false; // If this recipe has already been added to favorites.
+  private isFav = false; // The favorite status of the recipe.
 
   constructor(
     private navParams: NavParams,
     private recipeService: RecipeService,
-    private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private dataService: DataService,
     private msgService: MessageService
@@ -30,6 +29,7 @@ export class RecipeDetailsPage {
     });
     loader.present();
     this.recipe = this.navParams.data;
+    // Fetch all the favorite recipes and determines the favorite status of this recipe.
     this.recipeService.getFavRecipes().subscribe(
       res => {
         loader.dismiss();
@@ -41,7 +41,7 @@ export class RecipeDetailsPage {
 
   /**
    * Toggle the favorite status of this recipe both in database and local storage, 
-   * and globally emit the toggle event
+   * and globally emit the toggle event.
    * @returns {void}
    */
   onToggleFav(): void {
@@ -52,7 +52,7 @@ export class RecipeDetailsPage {
           this.dataService.toggleFavSubject.next({
             value: false,
             recipe: this.recipe
-          })
+          });
         },
         err => this.msgService.showAlert(NAME_CONSTANTS.RECIPE.DELETE_FAV_FAIL)
       )
@@ -63,7 +63,7 @@ export class RecipeDetailsPage {
           this.dataService.toggleFavSubject.next({
             value: true,
             recipe: this.recipe
-          })
+          });
         },
         err => this.msgService.showAlert(NAME_CONSTANTS.RECIPE.ADD_FAV_FAIL, err.error.message)
       )

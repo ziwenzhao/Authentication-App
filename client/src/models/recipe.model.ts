@@ -5,5 +5,5 @@ export class Recipe {
     img: {
         data: any;
         contentType: string;
-    }
+    };
 }

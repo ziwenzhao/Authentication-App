@@ -4,16 +4,16 @@
 const request = require('supertest');
 const expect = require('expect');
 const axios = require('axios');
-const app = require('../index.js');
 const jwt = require('jsonwebtoken');
+const app = require('../index.js');
 const mongoose = require('../db/mongoose');
 const User = require('../models/user');
-const { SECRET_KEY } = require('../config/auth')
-const { FavRecipe, Recipe } = require('../models/recipe');
 const Image = require('../models/image');
+const { FavRecipe, Recipe } = require('../models/recipe');
+const { SECRET_KEY } = require('../config/auth')
 
-let init_user; // The initial user before each test
-let init_recipes; // The initial recipes before each test
+let init_user; // The initial user before each test.
+let init_recipes; // The initial recipes before each test.
 
 // Before each test, it needs to reinitialize the data in the database.
 beforeEach(done => {
@@ -38,10 +38,10 @@ beforeEach(done => {
     });
 });
 
-// The test group of authentication APIs
+// The test group of authentication APIs.
 describe('User Authentication API Test', () => {
 
-    // The subgroup of POST '/signup' API
+    // The subgroup of POST '/signup' API.
     describe('Sign Up API Test', () => {
         it('should sign up a user.', done => {
             request(app)
@@ -75,7 +75,7 @@ describe('User Authentication API Test', () => {
                 .post('/signup')
                 .send({})
                 .expect(422)
-                .end(done)
+                .end(done);
         });
 
         it('should give an error of status 422 if the form of email or password is not correct', done => {
@@ -83,18 +83,18 @@ describe('User Authentication API Test', () => {
                 .post('/signup')
                 .send({ email: 'test', password: '134' })
                 .expect(422)
-                .end(done)
+                .end(done);
         });
     });
 
-    // The subgroup of POST '/signin' API
+    // The subgroup of POST '/signin' API.
     describe('Sign In API Test', () => {
         it('should sign in a user,', done => {
             request(app)
                 .post('/signin')
                 .send({ email: 'ziwenzzw@gmail.com', password: '123456' })
                 .expect(200)
-                .end(done)
+                .end(done);
         });
 
         it('should return an error of status 404 if the user does not exist.', done => {
@@ -102,15 +102,15 @@ describe('User Authentication API Test', () => {
                 .post('/signin')
                 .send({ email: 'test@gmail.com', password: 123456 })
                 .expect(404)
-                .end(done)
-        })
+                .end(done);
+        });
 
         it('should give an error of status 404 if email or password is empty.', done => {
             request(app)
                 .post('/signin')
                 .send({})
                 .expect(422)
-                .end(done)
+                .end(done);
         });
 
         it('should give an error of status 422 if the form of email or password is not correct', done => {
@@ -118,11 +118,11 @@ describe('User Authentication API Test', () => {
                 .post('/signin')
                 .send({ email: 'test', password: '134' })
                 .expect(422)
-                .end(done)
+                .end(done);
         });
     });
 
-    // The subgroup of GET '/refresh-token' API
+    // The subgroup of GET '/refresh-token' API.
     describe('Refresh Token API Test', () => {
         it('should return a token upon authorized request', done => {
             const token = jwt.sign({ id: init_user.id }, SECRET_KEY, { expiresIn: '10h' });
@@ -133,15 +133,15 @@ describe('User Authentication API Test', () => {
                 .expect(res => {
                     expect(jwt.verify(res.body.token, SECRET_KEY).id).toBe(init_user.id);
                 })
-                .end(done)
+                .end(done);
         });
-    })
-})
+    });
+});
 
-// The test group of recipe APIs
+// The test group of recipe APIs.
 describe('Recipe API Test', () => {
 
-    // The subgroup of GET '/recipes' API
+    // The subgroup of GET '/recipes' API.
     describe('Get Recipes API Test', () => {
         it('should return 3 recipes', done => {
             request(app)
@@ -150,11 +150,11 @@ describe('Recipe API Test', () => {
                 .expect(res => {
                     expect(res.body.length).toBe(3);
                 })
-                .end(done)
+                .end(done);
         });
-    })
+    });
 
-    // The subgroup of PATCH '/favorite-recipes/add/:id' API
+    // The subgroup of PATCH '/favorite-recipes/add/:id' API.
     describe('Add Favorite Recipe API Test', () => {
         it('should add a favorite recipe', done => {
             const recipe = init_recipes[1];
@@ -172,7 +172,7 @@ describe('Recipe API Test', () => {
                         expect(newFav.description).toBe(recipe.description);
                     })
                 })
-                .end(done)
+                .end(done);
         });
 
         it('should not add the same recipe to favorites', done => {
@@ -188,14 +188,14 @@ describe('Recipe API Test', () => {
                         expect(favRecipe.favRecipes.length).toBe(1);
                     })
                 })
-                .end(done)
-        })
+                .end(done);
+        });
 
         it('should return an error of status 401 if no token is provided in the header', done => {
             request(app)
                 .patch('/favorite-recipes/add/' + init_recipes[1].id)
                 .expect(401)
-                .end(done)
+                .end(done);
         });
 
         it('should return an error of status 401 if token format is not correct', done => {
@@ -204,7 +204,7 @@ describe('Recipe API Test', () => {
                 .patch('/favorite-recipes/add/' + init_recipes[1].id)
                 .set({ Authoriztion: token })
                 .expect(401)
-                .end(done)
+                .end(done);
         });
 
         it('should return an error of status 401 if an unauthorized token is provided', done => {
@@ -213,7 +213,7 @@ describe('Recipe API Test', () => {
                 .patch('/favorite-recipes/add/' + init_recipes[1].id)
                 .set({ Authorization: 'bearer ' + fakeToken })
                 .expect(401)
-                .end(done)
+                .end(done);
         });
 
         it('should return an error of status 400 if the provided recipe id is invalid', done => {
@@ -223,11 +223,11 @@ describe('Recipe API Test', () => {
                 .patch('/favorite-recipes/add/' + fakeId)
                 .set({ Authorization: 'bearer ' + token })
                 .expect(400)
-                .end(done)
+                .end(done);
         });
     });
 
-    // The subgroup of PATCH '/favorite-recipes/delete/:id' API
+    // The subgroup of PATCH '/favorite-recipes/delete/:id' API.
     describe('Delete Favorite Recipe API Test', () => {
         it('should delete a favorite recipe', done => {
             const recipe = init_recipes[0];
@@ -241,7 +241,7 @@ describe('Recipe API Test', () => {
                         expect(favRecipe.favRecipes.length).toBe(0);
                     })
                 })
-                .end(done)
+                .end(done);
         });
 
         it('should not delete a recipe from favorites if it is not in there', done => {
@@ -256,14 +256,14 @@ describe('Recipe API Test', () => {
                         expect(favRecipe.favRecipes.length).toBe(1);
                     })
                 })
-                .end(done)
-        })
+                .end(done);
+        });
 
         it('should return an error of status 401 if no token is provided in the header', done => {
             request(app)
                 .patch('/favorite-recipes/delete/' + init_recipes[1].id)
                 .expect(401)
-                .end(done)
+                .end(done);
         });
 
         it('should return an error of status 401 if token format is not correct', done => {
@@ -272,7 +272,7 @@ describe('Recipe API Test', () => {
                 .patch('/favorite-recipes/delete/' + init_recipes[1].id)
                 .set({ Authoriztion: token })
                 .expect(401)
-                .end(done)
+                .end(done);
         });
 
         it('should return an error of status 401 if an unauthorized token is provided', done => {
@@ -281,7 +281,7 @@ describe('Recipe API Test', () => {
                 .patch('/favorite-recipes/delete/' + init_recipes[1].id)
                 .set({ Authorization: 'bearer ' + fakeToken })
                 .expect(401)
-                .end(done)
+                .end(done);
         });
 
         it('should return an error of status 400 if the provided recipe id is invalid', done => {
@@ -291,20 +291,20 @@ describe('Recipe API Test', () => {
                 .patch('/favorite-recipes/delete/' + fakeId)
                 .set({ Authorization: 'bearer ' + token })
                 .expect(400)
-                .end(done)
+                .end(done);
         });
 
-    })
-})
+    });
+});
 
-// The test group of image APIs
+// The test group of image APIs.
 describe('Image API Test', () => {
     it('should fetch an image', done => {
         Image.find({}, (err, images) => {
             request(app)
                 .get('/image/' + images[0].id)
                 .expect(200)
-                .end(done)
+                .end(done);
         })
-    })
-})
+    });
+});

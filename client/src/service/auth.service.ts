@@ -1,3 +1,6 @@
+/**
+ * @description AuthService provides all the functions of authentication.
+ */
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
@@ -13,17 +16,17 @@ export class AuthService {
     ) { }
 
     /**
-     * Get HttpHeaders
+     * Get HttpHeaders.
      * @returns {HttpHeaders}
      */
     getHeaders(): HttpHeaders {
         return new HttpHeaders({
             Authorization: 'bearer ' + this.token
-        })
+        });
     }
 
     /**
-     * Sign in the account with given email and password
+     * Sign in the account with given email and password.
      * @param {string} email 
      * @param {string} password 
      * @returns {Observable<Object>}
@@ -33,7 +36,7 @@ export class AuthService {
     }
 
     /**
-     * Create an account with given email and password
+     * Create an account with given email and password.
      * @param {string} email 
      * @param {string} password 
      * @returns {Obvservable<Object>}
@@ -43,7 +46,7 @@ export class AuthService {
     }
 
     /**
-     * Sign out the account. Both the stored token and refreshing token interval will be cleard
+     * Sign out the account. Both the stored token and refreshing token interval will be cleard.
      * @returns {void}
      */
     signOut(): void {
@@ -52,7 +55,7 @@ export class AuthService {
     }
 
     /**
-     * Request for new tokens with the old token
+     * Request for new tokens with the old token.
      * @returns {void}
      */
     refreshToken(): void {
@@ -61,6 +64,6 @@ export class AuthService {
                 res => this.token = res['token'],
                 err => console.log(err)
             ), 1000 * 60 * 60 * 8
-        )
+        );
     }
 }

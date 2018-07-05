@@ -6,6 +6,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { AuthService } from '../service/auth.service';
 import { RecipeListPage } from '../pages/recipe-list/recipe-list';
 import { AuthPage } from '../pages/auth/auth';
+import * as NAME_CONSTANTS from '../config/name-constants';
 
 @Component({
   templateUrl: 'app.html'
@@ -13,7 +14,8 @@ import { AuthPage } from '../pages/auth/auth';
 export class MyApp {
   @ViewChild(Nav) private nav: Nav;
   private rootPage: any = AuthPage;
-  private pages: Array<{ title: string, icon: string, component: any, data: any }>; // The page navigators in the menu.
+  private pages: Array<{ title: string, icon: string, component: any, data: any }>; // The navigations pages in the menu.
+  private NAME_CONSTANTS = NAME_CONSTANTS;
 
   constructor(
     public platform: Platform,

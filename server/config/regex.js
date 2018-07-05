@@ -1,5 +1,5 @@
 /**
- * @description his file is used to export regular expressions.
+ * @description This file is used to export regular expressions.
  */
 
 module.exports = {

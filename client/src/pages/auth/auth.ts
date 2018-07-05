@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, LoadingController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../service/auth.service';
@@ -12,23 +12,27 @@ import * as NAME_CONSTANTS from '../../config/name-constants';
   templateUrl: 'auth.html',
 })
 export class AuthPage {
-  private mode = 'signin'; // Mode of this auth page, either 'signin' or 'signup'
+  private mode = 'signin'; // Mode of this auth page, either 'signin' or 'signup'.
   private form = this.fb.group({
     email: ['', [Validators.email, Validators.required]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
   private NAME_CONSTANTS = NAME_CONSTANTS;
+
   constructor(
     private navCtrl: NavController,
     private fb: FormBuilder,
-    private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private authService: AuthService,
     private msgService: MessageService
   ) {
   }
 
-  onSubmit() {
+  /**
+   * Handle form submissiton. It first checks the form validation then sends the authentication request.
+   * @returns {void}
+   */
+  onSubmit(): void {
     if (this.form.controls.email.errors) {
       return this.msgService.showAlert(
         this.mode === 'signin' ? NAME_CONSTANTS.AUTH.SIGN_IN_FAIL : NAME_CONSTANTS.AUTH.SIGN_UP_FAIL,
@@ -61,7 +65,7 @@ export class AuthPage {
     request.subscribe(
       res => {
         loader.dismiss();
-        this.authService.token = res['token']; // Store the retrieved token in the service for later usage
+        this.authService.token = res['token']; // Store the retrieved token in the service for later usage.
         this.navCtrl.setRoot(RecipeListPage, { mode: 'all' });
       },
       err => {
@@ -74,9 +78,12 @@ export class AuthPage {
     )
   }
 
-  onSwitch() {
+  /**
+   * Switch between the signin and signup mode of the page.
+   * @returns {void}
+   */
+  onSwitch(): void {
     this.mode = this.mode === 'signin' ? 'signup' : 'signin';
     this.form.reset();
   }
-
 }

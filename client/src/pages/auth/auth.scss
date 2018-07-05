@@ -3,7 +3,7 @@ page-auth {
 	// background-image display on device issues https://github.com/ionic-team/ionic/issues/8438
     .background {
         background-image: url('../assets/imgs/bg-1-1.png');
-		background-size: 120%
+		background-size: 70vh;
     }
 
 	.scroll-content {
@@ -37,6 +37,7 @@ page-auth {
 
 		.text-input {
 			color: #fff;
+			font-size: 4.1vw;
 		}
 
 		input::-moz-placeholder  {
@@ -68,10 +69,18 @@ page-auth {
 		position: absolute;
         bottom: 5vh;
         width: 100%;
-        font-size: 4.5vw
+        font-size: 4.5vw;
     }
     
     .bottom span {
         color: color($colors, primary, base);
-    }
+	}
+	
+	p {
+		font-size: 4.5vw;
+	}
+	
+	button {
+		font-size: 4.2vw!important;
+	}
 }

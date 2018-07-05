@@ -1,5 +1,5 @@
 /**
- * @description This file is used to export validator functions
+ * @description This file is used to export validator functions.
  */
 const { EMAIL_REGEX } = require('../config/regex');
 const emailValidator = email => EMAIL_REGEX.test(email)
