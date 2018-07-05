@@ -35,8 +35,9 @@ export class MyApp {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      // If the application runs in mobile device, use the native plugin to lock the screen in portrait orientation.
       if (!this.platform.is('core')) {
-        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT); // Lock the screen in portrait orientation.
+        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
       }
     });
   }

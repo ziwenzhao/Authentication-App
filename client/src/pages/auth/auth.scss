@@ -2,10 +2,27 @@ page-auth {
 	$placeholder-color: #dad8d8ea;
 	// background-image display on device issues https://github.com/ionic-team/ionic/issues/8438
     .background {
-        background-image: url('../assets/imgs/bg-1-1.png');
-		background-size: 70vh;
-    }
-
+		background-image: url('../assets/imgs/bg-1-1.png');
+		@media only screen and (max-height: 600px) {
+			background-size: 120vw;
+		}
+		@media only screen and (min-height: 600px) {
+			background-size: 120vw;
+		}
+		@media only screen and (min-height: 768px) {
+			background-size: 145vw;
+		}
+		@media only screen and (min-height: 815px) {
+			background-size: 138vw;
+		}
+		@media only screen and (min-height: 992px) {
+			background-size: 100vw;
+		}
+		@media only screen and (min-height: 1200px) {
+			background-size: 100vw;
+		}
+	}
+	
 	.scroll-content {
 		text-align: center;
 	}
