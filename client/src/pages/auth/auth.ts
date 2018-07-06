@@ -65,7 +65,8 @@ export class AuthPage {
     request.subscribe(
       res => {
         loader.dismiss();
-        this.authService.token = res['token']; // Store the retrieved token in the service for later usage.
+        this.authService.saveToken(res['token']);
+        this.authService.refreshTokenCycle();
         this.navCtrl.setRoot(RecipeListPage, { mode: 'all' });
       },
       err => {

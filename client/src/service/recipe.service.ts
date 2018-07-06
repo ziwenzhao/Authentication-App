@@ -21,7 +21,7 @@ export class RecipeService {
      */
     getHeaders(): HttpHeaders {
         const headers = new HttpHeaders({
-            Authorization: 'bearer ' + this.authService.token
+            Authorization: 'bearer ' + this.authService.getToken()
         });
         return headers;
     }

@@ -74,6 +74,7 @@ export class RecipeListPage {
         this.checkFavRecipesEmpty();
       },
       err => {
+        this.loader.dismiss();
         this.msgService.showAlert(NAME_CONSTANTS.RECIPE.FETCH_RECIPES_FAIL);
       }
     )

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, LoadingController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
@@ -21,6 +21,7 @@ export class MyApp {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
+    private loadingCtrl: LoadingController,
     private authSerivce: AuthService,
     private screenOrientation: ScreenOrientation
   ) {
@@ -38,6 +39,22 @@ export class MyApp {
       // If the application runs in mobile device, use the native plugin to lock the screen in portrait orientation.
       if (!this.platform.is('core')) {
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+      }
+      // If the token credential exists in local storage, refresh the token and automatically log into the app.
+      if (this.authSerivce.getToken()) {
+        const loader = this.loadingCtrl.create({
+          content: NAME_CONSTANTS.AUTH.SIGN_IN_LOADING
+        });
+        loader.present();
+        this.authSerivce.refreshToken().subscribe(
+          res => {
+            loader.dismiss();
+            this.authSerivce.saveToken(res['token']);
+            this.authSerivce.refreshTokenCycle();
+            this.nav.setRoot(RecipeListPage, { mode: 'all' });
+          },
+          err => loader.dismiss()
+        )
       }
     });
   }

@@ -6,7 +6,7 @@ let url;
 //      If the environment is development, it will connect to a local database called myApp.
 //      If the environment is test, it will connect to a a local database called test.
 if (process.env.NODE_ENV === 'production') {
-    url = "mongodb://ziwenzhao:sh802387@ds121341.mlab.com:21341/heroku_dkr6hllp";
+    url = process.env.MONGODB_URI;
 } else if (process.env.NODE_ENV === 'test') {
     url = "mongodb://localhost:27017/test";
 } else {

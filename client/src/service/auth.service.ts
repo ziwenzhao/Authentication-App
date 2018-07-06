@@ -8,7 +8,6 @@ import { PRODUCT_URL } from '../config/url';
 
 @Injectable()
 export class AuthService {
-    public token: string;
     public refreshTokenInterval: number; // The id of refreshing token interval, which is used to clear the interval when signing out.
 
     constructor(
@@ -16,12 +15,37 @@ export class AuthService {
     ) { }
 
     /**
+     * Fetch token from storage.
+     * @returns {string}
+     */
+    getToken(): string {
+        return localStorage.getItem('instant_pot_app_token');
+    }
+
+    /**
+     * Save token in the storage.
+     * @param {string} token 
+     * @returns {void}
+     */
+    saveToken(token): void {
+        localStorage.setItem('instant_pot_app_token', token);
+    }
+
+    /**
+     * Remove token from storage.
+     * @returns {void}
+     */
+    removeToken(): void {
+        localStorage.removeItem('instant_pot_app_token');
+    }
+
+    /**
      * Get HttpHeaders.
      * @returns {HttpHeaders}
      */
     getHeaders(): HttpHeaders {
         return new HttpHeaders({
-            Authorization: 'bearer ' + this.token
+            Authorization: 'bearer ' + this.getToken()
         });
     }
 
@@ -50,20 +74,28 @@ export class AuthService {
      * @returns {void}
      */
     signOut(): void {
-        this.token = null;
+        this.removeToken();
         clearInterval(this.refreshTokenInterval);
     }
 
     /**
-     * Request for new tokens with the old token.
+     * Cyclically refresh the token.
      * @returns {void}
      */
-    refreshToken(): void {
+    refreshTokenCycle(): void {
         this.refreshTokenInterval = setInterval(
-            () => this.http.get(PRODUCT_URL + 'refresh-token', { headers: this.getHeaders() }).subscribe(
-                res => this.token = res['token'],
+            () => this.refreshToken().subscribe(
+                res => this.saveToken(res['token']),
                 err => console.log(err)
             ), 1000 * 60 * 60 * 8
         );
+    }
+
+    /**
+     * Request for new token with the old token.
+     * @returns {Observable<Object>}
+     */
+    refreshToken(): Observable<Object> {
+        return this.http.get(PRODUCT_URL + 'refresh-token', { headers: this.getHeaders() });
     }
 }
